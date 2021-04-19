@@ -8,11 +8,15 @@
     Regras:
     1.	Cada estado será constituído por 5 regiões, sendo elas: Nordeste, Noroeste, Sudeste, Sudoeste e Centro.
 
-    2.	Os hotéis serão classificados de melhor a pior com bases em estrelas, sendo 1 estrela o pior, e 5 estrelas o melhor.
+    2.	Os hotéis serão classificados de melhor a pior com bases em estrelas, sendo 1 estrela o pior, e 5 estrelas o
+    melhor.
 
-    3.	O usuário poderá também filtrar os resultados (Ex: caso ele ative o filtro de ser necessária uma academia, devem ser listados novos 10 hotéis com academia).
+    3.	O usuário poderá também filtrar os resultados (Ex: caso ele ative o filtro de ser necessária uma academia, devem
+     ser listados novos 10 hotéis com academia).
 
-    4.	Cada hotel deve conter as seguintes informações no DataBase: Nome, anos na ativa, Classificação (estrelas), Preço do quarto por noite, Tem academia, Tem piscina, Inclui (café da manhã, almoço e jantar) na tarifa, cidade, estado, vagas disponíveis.
+    4.	Cada hotel deve conter as seguintes informações no DataBase: Nome, anos na ativa, Classificação (estrelas),
+    Preço do quarto por noite, Tem academia, Tem piscina, Inclui (café da manhã, almoço e jantar) na tarifa, cidade,
+    estado, vagas disponíveis.
 
     5.	 Na listagem dos hotéis, devem aparecer todas informações sobre cada hotel.
 
@@ -20,13 +24,12 @@
 
 
 """
-import string
-
 from banco_de_dados import BancoDeDados
 
 
 bd = BancoDeDados()
 bd.conectar_db()
+
 
 def listar_valores(cabecalho_consulta, consulta):
     tamanho_tupla = 24
@@ -42,6 +45,7 @@ def listar_valores(cabecalho_consulta, consulta):
         for item in tupla:
             lista.append(str(item) + " " * (tamanho_tupla - len(str(item))))
         print("".join(lista))
+
 
 while True:
 
@@ -62,7 +66,8 @@ while True:
 
         piscina_digitada = input("deseja listar apenas hoteis que tenham piscina? Digite S para confirmar: ")
 
-        all_inclusive_digitado = input("deseja listar apenas hoteis que tenham servico de all inclusive (cafe/almoço/jantar)? Digite S para confirmar: ")
+        all_inclusive_digitado = input("deseja listar apenas hoteis que tenham servico de all inclusive "
+                                       "(cafe/almoço/jantar)? Digite S para confirmar: ")
 
         query = "select " \
                   "h.nome_hoteis, " \
@@ -90,15 +95,14 @@ while True:
                   "where 1=1 " \
                   "and q.disponibilidade <> '0' "
 
-        if academia_digitada == 'S' or academia_digitada == 's':
+        if academia_digitada.lower() == 's':
             query = query + "and h.academia_hoteis = 1 "
 
-        if piscina_digitada == 'S' or piscina_digitada == 's':
+        if piscina_digitada.lower() == 's':
             query = query + "and h.piscina_hoteis = 1 "
 
-        if all_inclusive_digitado == 'S' or all_inclusive_digitado == 's':
+        if all_inclusive_digitado.lower() == 's':
             query = query + "and h.all_inclusive_hoteis = 1 "
-
 
         sql = query + f"and r.id_regioes = {id_regiao[0][0]} " \
                   "order by 2 desc, 1 " \
@@ -108,6 +112,3 @@ while True:
         listar_valores(cabecalho_consulta, consulta)
     else:
         print("Digite uma cidade válida.")
-
-
-
